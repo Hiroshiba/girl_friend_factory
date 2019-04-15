@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Girl Friend Factory</title>
+<link rel="stylesheet" href="./static/style.css?v=5037736143c5472eebe77977ad9bd887"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+crossorigin="anonymous"></script>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/css/bootstrap-select.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.0/js/bootstrap-select.min.js"></script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-contextmenu/0.3.4/bootstrap-contextmenu.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/purl/2.3.1/purl.min.js"></script>
+<script type="text/javascript"
+src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Base64/1.0.0/base64.js"></script>
+<script src="https://cdn.rawgit.com/waylonflinn/weblas/master/dist/weblas.js"></script>
+<script src="./api/kerasjs/keras.js"></script>
+<script type="text/javascript">
+var generate_image_mode = 'keras_js';
+</script>
+<script src="./static/javascript.js?v=fe8d36ef7faf9271eb8a3c8ff27c2fb6" type="application/javascript"></script>
+
+<script type="text/javascript">
+var content;
+var now_ajax = 'list';
+$(document).ready(function () {
+content = $('#content');
+$(document).on('click', '.navbar a', function (event) {
+event.preventDefault();
+var link = $(this).attr('href');
+var target = link.split('/')[1].split('.')[0];
+if (now_ajax == target) {
+return false;
+} else {
+now_ajax = target;
+load_html(target);
+}
+});
+load_html(now_ajax);
+});
+var ajax_info_list = {
+list: './list.html',
+tag2image: './tag2image.html',
+tag2image_fixz: './tag2image_fixz.html',
+tag2image_morphing: './tag2image_morphing.html',
+tag2image_morphing_z: './tag2image_morphing_z.html',
+};
+function load_html(target) {
+$.ajax({
+type: 'GET',
+url: ajax_info_list[target],
+dataType: 'html',
+success: function (data) {
+content.empty().append(data);
+},
+error: function (e) {
+console.log(e.stack);
+}
+});
+}
+</script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+<div class="container">
+<div class="navbar-header">
+<a class="navbar-brand">Girl Friend Factory</a>
+</div>
+<ul class="nav navbar-nav">
+<li><a href="./list.html">生成一覧</a></li>
+<li><a href="./tag2image.html">無限ガチャ</a></li>
+<li><a href="./tag2image_fixz.html">属性変更</a></li>
+<li><a href="./tag2image_morphing.html">属性モーフィング</a></li>
+<li><a href="./tag2image_morphing_z.html">合成</a></li>
+</ul>
+</div>
+</nav>
+<div id="context-menu">
+<ul class="dropdown-menu" role="menu">
+<li><a tabindex="-1" href="#">お気に入り登録</a></li>
+</ul>
+</div>
+
+<div id="content" class="container">
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        var registered = getRegistered();
+        var taglist_jp = getTagListJP();
+
+        try {
+            var div = document.getElementById('images');
+
+            registered.forEach(function (obj) {
+                var div_image = document.createElement('div');
+
+                var img = createGeneratedImageElement();
+                putGeneratedImageAttribute(img, obj.tags, obj.seed);
+                div_image.appendChild(img);
+
+                obj.tags = obj.tags.map(function (tag) {
+                    return taglist_jp[tag];
+                });
+
+                var p = document.createElement('pre');
+                p.innerText = JSON.stringify(obj, null, '\t');
+                div_image.appendChild(p);
+
+                div_image.appendChild(document.createElement('hr'));
+
+                div.appendChild(div_image);
+            });
+        }
+        catch (e) {
+            console.error(e);
+        }
+    });
+</script>
+
+<pre>お気に入り登録した彼女が一覧表示されます。　まずは無限ガチャで彼女を生成しよう！！</pre>
+<div id="images">
+</div>

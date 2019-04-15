@@ -1,0 +1,619 @@
+<script type="text/javascript">
+    var taglist_jp = getTagListJP();
+
+    var seeds = [];
+    for (var i = 0; i < 10; i++) {
+        seeds.push(getRandomSeed());
+    }
+
+    var registered = getRegistered();
+    for (var i = 0; i < registered.length; i++) {
+        seeds[i] = registered[i].seed;
+    }
+
+    // add registered images
+    $(document).ready(function () {
+        try {
+            var div = document.getElementById('images');
+            var div_image = document.createElement('div');
+
+            registered.forEach(function (obj) {
+                var img = createGeneratedImageElement();
+                putGeneratedImageAttribute(img, obj.tags, obj.seed);
+                div_image.appendChild(img);
+            });
+
+            div.appendChild(div_image);
+        }
+        catch (e) {
+            console.error(e);
+        }
+    });
+
+    function onclicked() {
+        try {
+            var div_images = document.getElementById('images');
+            var checked_tags = getSelectedTagList("tag_check_");
+
+            var div = document.createElement("div");
+            var str_json = JSON.stringify(checked_tags.map(function (tag) {
+                return taglist_jp[tag];
+            }));
+
+            div.appendChild(document.createElement('hr'));
+
+            var p = document.createElement('pre');
+            p.innerText = str_json;
+            div.appendChild(p);
+
+            for (var i = 0; i < 10; i++) {
+                var img = createGeneratedImageElement();
+                putGeneratedImageAttribute(img, checked_tags, seeds[i]);
+                div.appendChild(img);
+            }
+            div_images.appendChild(div);
+
+            registImageToContextMenu();
+        }
+        catch (e) {
+            console.error(e);
+            return false;
+        }
+    }
+</script>
+
+<pre>お気に入り登録した彼女の属性を変更できます。　10人未満の場合はランダムに彼女が生成されます。</pre>
+<div id="images">
+</div>
+<form id="form" name="form" onsubmit="onclicked(); return false;">
+<div class="form-group row">
+<div class="col-xs-1 col-xs-offset-11">
+<button class="btn btn-default" onclick="">生成</button>
+</div>
+</div>
+<!-- タグ選択フォーム -->
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">髪の色</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_black_hair" type="checkbox" value="black_hair">
+黒髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_blue_hair" type="checkbox" value="blue_hair">
+青髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_blonde_hair" type="checkbox" value="blonde_hair">
+金髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_brown_hair" type="checkbox" value="brown_hair">
+茶髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_purple_hair" type="checkbox" value="purple_hair">
+紫髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_pink_hair" type="checkbox" value="pink_hair">
+ピンク髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_green_hair" type="checkbox" value="green_hair">
+緑髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_white_hair" type="checkbox" value="white_hair">
+白髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_red_hair" type="checkbox" value="red_hair">
+赤髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_orange_hair" type="checkbox" value="orange_hair">
+橙髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_aqua_hair" type="checkbox" value="aqua_hair">
+青緑髪
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_silver_hair" type="checkbox" value="silver_hair">
+銀髪
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">眼の色</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_green_eyes" type="checkbox" value="green_eyes">
+緑眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_yellow_eyes" type="checkbox" value="yellow_eyes">
+黄眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_blue_eyes" type="checkbox" value="blue_eyes">
+青眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_brown_eyes" type="checkbox" value="brown_eyes">
+茶眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_red_eyes" type="checkbox" value="red_eyes">
+赤眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_purple_eyes" type="checkbox" value="purple_eyes">
+紫眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_pink_eyes" type="checkbox" value="pink_eyes">
+桃眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_aqua_eyes" type="checkbox" value="aqua_eyes">
+碧眼
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">髪型</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_very_long_hair" type="checkbox" value="very_long_hair">
+超ロングヘア
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_long_hair" type="checkbox" value="long_hair">
+ロングヘア
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_short_hair" type="checkbox" value="short_hair">
+ショートヘア
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_twintails" type="checkbox" value="twintails">
+ツインテール
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_wavy_hair" type="checkbox" value="wavy_hair">
+ウェーブヘア
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_side_ponytail" type="checkbox" value="side_ponytail">
+サイドポニテ
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">顔のパーツ</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_open_mouth" type="checkbox" value="open_mouth">
+開口
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_closed_eyes" type="checkbox" value="closed_eyes">
+閉眼
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_lips" type="checkbox" value="lips">
+唇
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_one_eye_closed" type="checkbox" value="one_eye_closed">
+ウィンク
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">表情</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_smile" type="checkbox" value="smile">
+笑顔
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_blush" type="checkbox" value="blush">
+赤面
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">飾り</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_hat" type="checkbox" value="hat">
+帽子
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_animal_ears" type="checkbox" value="animal_ears">
+獣耳
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_hair_bow" type="checkbox" value="hair_bow">
+髪リボン
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_necktie" type="checkbox" value="necktie">
+ネクタイ
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_glasses" type="checkbox" value="glasses">
+眼鏡
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_hair_tubes" type="checkbox" value="hair_tubes">
+髪ゴム
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_mob_cap" type="checkbox" value="mob_cap">
+婦人帽
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_hat_ribbon" type="checkbox" value="hat_ribbon">
+帽子リボン
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_hair_ornament" type="checkbox" value="hair_ornament">
+髪飾り
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_red-framed_eyewear" type="checkbox" value="red-framed_eyewear">
+赤縁メガネ
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_ribbon" type="checkbox" value="ribbon">
+リボン
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_maid_headdress" type="checkbox" value="maid_headdress">
+ホワイトブリム
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_choker" type="checkbox" value="choker">
+チョーカー
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">服装</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_school_uniform" type="checkbox" value="school_uniform">
+学生服
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_swimsuit" type="checkbox" value="swimsuit">
+水着
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_serafuku" type="checkbox" value="serafuku">
+セーラー服
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_bikini" type="checkbox" value="bikini">
+ビキニ
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_puffy_sleeves" type="checkbox" value="puffy_sleeves">
+ふっくら袖
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_ascot" type="checkbox" value="ascot">
+アスコット
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_detached_sleeves" type="checkbox" value="detached_sleeves">
+分離袖
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_military_uniform" type="checkbox" value="military_uniform">
+軍服
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_underwear" type="checkbox" value="underwear">
+下着
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_bunnysuit" type="checkbox" value="bunnysuit">
+バニースーツ
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_wide_sleeves" type="checkbox" value="wide_sleeves">
+広い袖
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_short_sleeves" type="checkbox" value="short_sleeves">
+短い袖
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_bra" type="checkbox" value="bra">
+ブラ
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">ジャンル</legend>
+<div class="col-xs-10">
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">色情報</legend>
+<div class="col-xs-10">
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">背景</legend>
+<div class="col-xs-10">
+
+</div>
+</fieldset>
+
+<fieldset class="form-group row">
+<legend class="col-form-legend col-xs-2">その他</legend>
+<div class="col-xs-10">
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_breasts" type="checkbox" value="breasts">
+おっぱい
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_large_breasts" type="checkbox" value="large_breasts">
+巨乳
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_nipples" type="checkbox" value="nipples">
+乳首
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_cleavage" type="checkbox" value="cleavage">
+谷間
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_collarbone" type="checkbox" value="collarbone">
+鎖骨
+</label>
+</div>
+
+<div class="form-check col-xs-2">
+<label class="form-check-label">
+<input class="form-check-input" id="tag_check_paw_pose" type="checkbox" value="paw_pose">
+にゃんポーズ
+</label>
+</div>
+
+</div>
+</fieldset>
+
+<script type="text/javascript">
+$(document).ready(function () {
+var good_tags = [
+'smile',
+'open_mouth',
+'blush',
+'blonde_hair',
+'aqua_eyes',
+'green_eyes',
+'long_hair',
+];
+good_tags.forEach(function (tag) {
+$('#tag_check_' + tag).prop("checked", true);
+});
+});
+</script>
+
+</form>
+
